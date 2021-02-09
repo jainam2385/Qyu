@@ -7,6 +7,8 @@ class UserDetail(models.Model):
     email = models.EmailField(unique=True, blank=False, max_length=100)
     contact = models.CharField(max_length=10, blank=True, default="")
     is_verified = BooleanField(default=False)
+    first_name = models.CharField(max_length=100, default="")
+    last_name = models.CharField(max_length=100, default="")
 
     def __str__(self):
         return f"{self.id}"
