@@ -21,7 +21,6 @@ class SubscriptionDetailApi(APIView):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-
     def delete(self, request):
         try:
             _user_id = request.GET["user_id"]
@@ -36,3 +35,19 @@ class SubscriptionDetailApi(APIView):
             return Response(
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+class BroadcastMeassage(APIView):
+    # todo: Send notification to the users subscribed to the organization.
+    # The notification will be via mail.
+
+    def get(self, request):
+        try:
+            _organization_id = request.GET["organization_id"]
+            subscribers = SubscriptionSerializer(
+                Subscription.objects.filter(organization_id = _organization_id),
+                many = True
+            )
+            print(subscribers)
+        except:
+            pass
+        return Response()
