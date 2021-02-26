@@ -8,6 +8,6 @@ class Subscription(models.Model):
 
     class Meta:
         unique_together = ('organization_id', 'user_id')
-    
+
     def __str__(self) -> str:
         return f"{self.organization_id} - {self.user_id}"
