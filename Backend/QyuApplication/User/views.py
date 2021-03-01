@@ -1,11 +1,11 @@
-from .serializers import UserDetailSerailizer
+from .serializers import UserDetailSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAdminUser
 from .models import UserDetail
 from django.contrib.auth.hashers import (
-    make_password, 
+    make_password,
     check_password
     )
 
@@ -22,7 +22,7 @@ def get_user_model(user_id):
 
 
 class UserDetailApi(APIView):
-    
+
     permission_classes = [IsAdminUser]
 
     def get(self, request):
@@ -30,9 +30,9 @@ class UserDetailApi(APIView):
         try:
             user_id = request.GET["id"]
             user_model = get_user_model(user_id)
-            
-            serializer = UserDetailSerailizer(
-                user_model, 
+
+            serializer = UserDetailSerializer(
+                user_model,
                 many=False
             )
 
@@ -48,7 +48,7 @@ class UserDetailApi(APIView):
 
 
     def post(self, request):
-        user_data = UserDetailSerailizer(data = request.data)
+        user_data = UserDetailSerializer(data = request.data)
         if user_data.is_valid():
             user_data.validated_data["password"] = hash_password(user_data.validated_data["password"])
             user_data.save()
@@ -56,7 +56,7 @@ class UserDetailApi(APIView):
             return Response(
                 status=status.HTTP_201_CREATED,
             )
-        
+
         return Response(
             user_data.errors,
             status=status.HTTP_400_BAD_REQUEST
@@ -65,18 +65,18 @@ class UserDetailApi(APIView):
 
     def put(self, request):
         user_id = request.GET["id"]
-        serializer = UserDetailSerailizer(get_user_model(user_id) ,data=request.data)
+        serializer = UserDetailSerializer(get_user_model(user_id) ,data=request.data)
         try:
             if serializer.is_valid():
                 serializer.save()
                 return Response(
-                    serializer.data, 
+                    serializer.data,
                     status=status.HTTP_201_CREATED
                 )
 
         except:
             return Response(
-                serializer.errors, 
+                serializer.errors,
                 status=status.HTTP_406_NOT_ACCEPTABLE
             )
 

@@ -11,4 +11,4 @@ class OrganizationDetail(models.Model):
     is_verified = models.BooleanField(default=False)
 
     def __str__(self) -> str:
-        return f"{self.email}"
+        return f"{self.id}"

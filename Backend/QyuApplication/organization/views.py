@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAdminUser
 from .models import OrganizationDetail
 from django.contrib.auth.hashers import (
-    make_password, 
+    make_password,
     check_password
     )
 
@@ -30,7 +30,7 @@ class OrganizationDetailApi(APIView):
             organization_email = request.GET["email"]
             organization_model = get_organization_model(organization_email)
             serializer = OrganizationDetailSerailizer(
-                organization_model, 
+                organization_model,
                 many=False
             )
             return Response(
@@ -39,9 +39,9 @@ class OrganizationDetailApi(APIView):
             )
 
         except:
-        	return Response(
-        		status=status.HTTP_404_NOT_FOUND,
-        	)
+            return Response(
+                status=status.HTTP_404_NOT_FOUND,
+            )
 
 
     def post(self, request):
@@ -53,7 +53,7 @@ class OrganizationDetailApi(APIView):
             return Response(
                 status=status.HTTP_201_CREATED,
             )
-        
+
         return Response(
             organization_data.errors,
             status=status.HTTP_400_BAD_REQUEST
@@ -63,7 +63,7 @@ class OrganizationDetailApi(APIView):
     def put(self, request):
         organization_email = request.GET["email"]
         serializer = OrganizationDetailSerailizer(
-            get_organization_model(organization_email), 
+            get_organization_model(organization_email),
             data=request.data
         )
 
@@ -77,7 +77,7 @@ class OrganizationDetailApi(APIView):
 
         except:
             return Response(
-                serializer.errors, 
+                serializer.errors,
                 status=status.HTTP_406_NOT_ACCEPTABLE
             )
 
@@ -105,7 +105,7 @@ class AuthenticateOrganizationApi(APIView):
             email = request.POST.get('email')
             password_ = request.POST.get('password')
             organization_model = get_organization_model(email)
-            
+
             if confirm_password(password_, organization_model.password):
                 return Response({
                     "authenticate": True,
