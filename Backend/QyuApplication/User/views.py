@@ -106,13 +106,20 @@ class AuthenticateUserApi(APIView):
             username_ = request.POST.get("username")
             password_ = request.POST.get("password")
             user_model = UserDetail.objects.get(username=username_)
+            serializer = UserDetailSerializer(
+                user_model,
+                many=False
+            )
 
             if confirm_password(password_, user_model.password):
-                return Response({
-                    "authenticate": True,
-                }, status = status.HTTP_200_OK)
+                return Response(
+                    serializer.data,
+                    status = status.HTTP_200_OK
+                )
+
             return Response({
                 "authenticate": False,
             }, status=status.HTTP_401_UNAUTHORIZED)
+
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)

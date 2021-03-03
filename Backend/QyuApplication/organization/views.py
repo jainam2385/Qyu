@@ -105,11 +105,17 @@ class AuthenticateOrganizationApi(APIView):
             email = request.POST.get('email')
             password_ = request.POST.get('password')
             organization_model = get_organization_model(email)
+            serializer = OrganizationDetailSerailizer(
+                organization_model,
+                many=False
+            )
 
             if confirm_password(password_, organization_model.password):
-                return Response({
-                    "authenticate": True,
-                }, status = status.HTTP_200_OK)
+                return Response(
+                    serializer.data,
+                    status = status.HTTP_200_OK
+                )
+
             return  Response({
                 "authenticate": False
             }, status = status.HTTP_401_UNAUTHORIZED)
