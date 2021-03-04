@@ -91,3 +91,20 @@ class EventDetailApi(APIView):
                 serializer.errors,
                 status=status.HTTP_406_NOT_ACCEPTABLE
             )
+
+    def delete(self, request):
+        try:
+            event_id = request.GET["event_id"]
+            event_model = get_event_model(event_id)
+            event_model.status = "D"
+            event_model.save()
+
+            return Response(
+                EventSerializer(event_model).data,
+                status = status.HTTP_200_OK
+            )
+
+        except:
+            return Response(
+                status = status.HTTP_400_BAD_REQUEST
+            )
