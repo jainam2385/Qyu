@@ -8,6 +8,9 @@ from django.contrib.auth.hashers import (
     make_password,
     check_password
     )
+from event.models import Event
+from event.serializers import EventSerializer
+
 
 def hash_password(password):
     return make_password(password)
@@ -121,3 +124,33 @@ class AuthenticateOrganizationApi(APIView):
             }, status = status.HTTP_401_UNAUTHORIZED)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class OrganizationEvents(APIView):
+
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+        try:
+            status_ = None
+            if "status" in request.GET:
+                status_ = request.GET['status']
+
+            organization_id_ = request.GET["organization_id"]
+            if status_ == "A" or status_ == "R" or status_ == "D":
+                events = Event.objects.filter(organization_id = organization_id_, status = status_)
+            else:
+                events = Event.objects.filter(organization_id = organization_id_)
+
+            serializer = EventSerializer(
+                events,
+                many=True
+            )
+            return Response(
+                serializer.data,
+                status = status.HTTP_200_OK
+            )
+        except:
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST
+            )
