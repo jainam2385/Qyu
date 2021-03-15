@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'organization',
     'subscription',
     'event',
+    'vqueue',
 ]
 
 MIDDLEWARE = [

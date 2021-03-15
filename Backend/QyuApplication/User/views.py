@@ -65,7 +65,10 @@ class UserDetailApi(APIView):
 
     def put(self, request):
         user_id = request.GET["id"]
-        serializer = UserDetailSerializer(get_user_model(user_id) ,data=request.data)
+        serializer = UserDetailSerializer(
+            get_user_model(user_id),
+            data=request.data
+        )
         try:
             if serializer.is_valid():
                 serializer.save()
