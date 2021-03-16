@@ -96,7 +96,7 @@ class QueueDetailApi(APIView):
             _status = request.GET["status"]
             _status = _status.upper()
 
-            vqueue_model = Queue.objects.get(user_id = user_id, event_id = _event_id)
+            vqueue_model = Queue.objects.get(user_id = _user_id, event_id = _event_id)
 
             if vqueue_model.status == "W"  and (_status == 'L' or _status == 'R' or _status == 'C'):
                 vqueue_model.status = _status

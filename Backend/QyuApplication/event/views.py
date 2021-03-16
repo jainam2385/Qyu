@@ -110,7 +110,7 @@ class EventDetailApi(APIView):
             )
 
 
-class StartQueue(APIView):
+class StartEvent(APIView):
 
     permission_classes = [IsAdminUser]
 
@@ -119,8 +119,38 @@ class StartQueue(APIView):
             event_id = request.GET["event_id"]
             event_model = get_event_model(event_id)
             if event_model.status == "R":
-                
+                event_model.status = "A"
+                event_model.save()
+
+                # TODO MAIL ALL USERS REGARDING START OF THE EVENT
+
+                return Response(
+                    status=status.HTTP_200_OK
+                )
+            else:
+                return Response(
+                    status = status.HTTP_406_NOT_ACCEPTABLE
+                )
         except:
             return Response(
                 status = status.HTTP_400_BAD_REQUEST
+            )
+
+class EndEvent(APIView):
+
+    permission_classes = [IsAdminUser]
+
+    def post(self, request):
+        try:
+            event_id = request.GET["event_id"]
+            event_model = get_event_model(event_id)
+            if event_model.status == "A":
+                event_model.status = "D"
+                event_model.save()
+
+            # TODO MAIL USERS OF EVENT ENDING
+
+        except:
+            return Response(
+                status = status.HTTP_200_OK
             )
