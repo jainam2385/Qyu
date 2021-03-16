@@ -108,3 +108,19 @@ class EventDetailApi(APIView):
             return Response(
                 status = status.HTTP_400_BAD_REQUEST
             )
+
+
+class StartQueue(APIView):
+
+    permission_classes = [IsAdminUser]
+
+    def post(self, request):
+        try:
+            event_id = request.GET["event_id"]
+            event_model = get_event_model(event_id)
+            if event_model.status == "R":
+                
+        except:
+            return Response(
+                status = status.HTTP_400_BAD_REQUEST
+            )
