@@ -1,5 +1,7 @@
 from django.db import models
 from organization.models import OrganizationDetail
+from django.utils.timezone import now
+
 
 # Create your models here.
 
@@ -13,8 +15,8 @@ class Event(models.Model):
     name = models.CharField(max_length=100, blank=False)
     organization_id = models.ForeignKey(OrganizationDetail, on_delete=models.CASCADE)
     description = models.CharField(max_length = 1000, blank=False)
-    start_date_time = models.DateTimeField(blank=False)
-    end_date_time = models.DateTimeField(blank=False)
+    start_date_time = models.DateTimeField(default=now, blank=True)
+    end_date_time = models.DateTimeField(default=now, blank=True)
     max_participants = models.IntegerField(blank=False)
     avg_waiting_time = models.FloatField(blank=False)
     status = models.CharField(max_length = 1, choices = EVENT_STATUS, blank=False)
