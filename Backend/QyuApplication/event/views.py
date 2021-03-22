@@ -4,7 +4,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAdminUser
 from .models import Event
+from datetime import datetime
 import uuid
+
 
 
 def is_unique(key):
@@ -116,12 +118,14 @@ class StartEvent(APIView):
 
     def post(self, request):
         try:
-            event_id = request.GET["event_id"]
+            event_id = request.POST["event_id"]
+            print(event_id)
             event_model = get_event_model(event_id)
             if event_model.status == "R":
                 event_model.status = "A"
+                event_model.start_date_time = datetime.now()
                 event_model.save()
-
+                print(event_model)
                 # TODO MAIL ALL USERS REGARDING START OF THE EVENT
 
                 return Response(
@@ -142,14 +146,22 @@ class EndEvent(APIView):
 
     def post(self, request):
         try:
-            event_id = request.GET["event_id"]
+            event_id = request.POST["event_id"]
             event_model = get_event_model(event_id)
             if event_model.status == "A":
                 event_model.status = "D"
+                event_model.end_date_time = datetime.now()
                 event_model.save()
 
-            # TODO MAIL USERS OF EVENT ENDING
+                # TODO MAIL USERS OF EVENT ENDING
 
+                return Response(
+                    status=status.HTTP_200_OK
+                )
+            else:
+                return Response(
+                    status = status.HTTP_406_NOT_ACCEPTABLE
+                )
         except:
             return Response(
                 status = status.HTTP_200_OK

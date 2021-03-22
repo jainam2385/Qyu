@@ -154,3 +154,11 @@ class OrganizationEvents(APIView):
             return Response(
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+
+class AllOrganizations(APIView):
+
+	permission_classes = [IsAdminUser]
+
+	def get(self, request):
+		organizations = OrganizationDetail.objects.all()
