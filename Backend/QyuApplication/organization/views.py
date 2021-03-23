@@ -157,8 +157,15 @@ class OrganizationEvents(APIView):
 
 
 class AllOrganizations(APIView):
+    permission_classes = [IsAdminUser]
 
-	permission_classes = [IsAdminUser]
-
-	def get(self, request):
-		organizations = OrganizationDetail.objects.all()
+    def get(self, request):
+        organizations = OrganizationDetail.objects.all()
+        organizations_serializer = OrganizationDetailSerailizer(
+            organizations,
+            many = True
+        )
+        return Response(
+            organizations_serializer.data, 
+            status = status.HTTP_200_OK
+        )
