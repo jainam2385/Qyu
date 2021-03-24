@@ -19,6 +19,7 @@ class Event(models.Model):
     avg_waiting_time = models.FloatField(blank=False)
     status = models.CharField(max_length = 1, choices = EVENT_STATUS, blank=False)
     security_key = models.CharField(max_length=10,blank=True, unique=True, default='')
+    is_private = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.id} - {self.name}"
