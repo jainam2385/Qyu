@@ -3,7 +3,8 @@ from .views import (
     OrganizationDetailApi,
     AuthenticateOrganizationApi,
     OrganizationEvents,
-    AllOrganizations
+    AllOrganizations,
+    OrganizationStatistics
 )
 
 
@@ -12,4 +13,5 @@ urlpatterns = [
     path('authenticate-organization/', AuthenticateOrganizationApi.as_view(), name='authenticate-organization'),
     path('organization-events/', OrganizationEvents.as_view(), name='organization-events'),
     path('get-all-organizations/', AllOrganizations.as_view(), name='get-all-organizations'),
+    path('organization-stats/', OrganizationStatistics.as_view(), name='organization-stats')
 ]

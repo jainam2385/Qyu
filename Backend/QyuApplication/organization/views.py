@@ -10,7 +10,7 @@ from django.contrib.auth.hashers import (
     )
 from event.models import Event
 from event.serializers import EventSerializer
-
+from vqueue.models import Queue
 
 def hash_password(password):
     return make_password(password)
@@ -169,3 +169,45 @@ class AllOrganizations(APIView):
             organizations_serializer.data, 
             status = status.HTTP_200_OK
         )
+
+class OrganizationStatistics(APIView):
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+        try:
+            _organization_id = request.GET["organization_id"]
+        except:
+            return Response({
+                "success": False
+                }, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+
+            events = Event.objects.filter(organization_id = _organization_id)
+            queue = Queue.objects.filter(event_id__in = [current_event.id for current_event in events])
+            
+            left = queue.filter(status="L").count()
+            waiting = queue.filter(status="W").count()
+            removed = queue.filter(status="R").count()
+            complete = queue.filter(status="C").count()
+            reg_events = events.filter(status="R").count()
+            ongoing_events = events.filter(status="A").count()
+            archive_events = events.filter(status="D").count()
+
+            return Response({
+                "left": left,
+                "waiting": waiting,
+                "removed": removed,
+                "complete": complete,
+                "reg_event": reg_events,
+                "ongoing_event": ongoing_events,
+                "archive_event": archive_events,
+                "success": True
+            })
+        except:
+            return Response({
+                "success": False
+                }, status=status.HTTP_400_BAD_REQUEST
+            )
