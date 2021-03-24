@@ -16,26 +16,35 @@ class SubscriptionDetailApi(APIView):
         subscription_data = SubscriptionSerializer(data=request.data)
         if subscription_data.is_valid():
             subscription_data.save()
-            return Response(
+            return Response({
+                    "success": True
+                },
                 status=status.HTTP_201_CREATED,
             )
-        return Response(
-            subscription_data.errors,
+        return Response({
+                "success": False
+            },
             status=status.HTTP_400_BAD_REQUEST
         )
 
     def delete(self, request):
         try:
-            _user_id = request.GET["user_id"]
-            _organization_id = request.GET["organization_id"]
-
+            print(request.GET)
+            _user_id = int(request.GET["user_id"])
+            _organization_id = int(request.GET["organization_id"])
+            
             subscription_model = Subscription.objects.get(user_id=_user_id, organization_id=_organization_id)
+            print(subscription_model)
             subscription_model.delete()
-            return Response(
+            return Response({
+                    "success": True
+                },
                 status=status.HTTP_204_NO_CONTENT
             )
         except:
-            return Response(
+            return Response({
+                    "success": False
+                },
                 status=status.HTTP_400_BAD_REQUEST
             )
 
