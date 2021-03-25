@@ -166,3 +166,10 @@ class EndEvent(APIView):
             return Response(
                 status = status.HTTP_200_OK
             )
+
+
+# class EventStatistics(APIVieW):
+#     permission_classes = [IsAdminUser]
+
+#     def get(self, request):
+#         return Repsonse()
