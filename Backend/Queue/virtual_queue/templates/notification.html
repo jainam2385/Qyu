@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+
+    <style>
+        div {
+            padding-top: 5px;
+            padding-right: 5px;
+            padding-bottom: 5px;
+            padding-left: 5px;
+        }
+    </style>
+</head>
+
+<body style="background-color: lightblue">
+    <div>
+        <h3>Hello {{user}},</h3>
+        <br />
+        <p style="font-size: 100%">{{notification}}</p>
+        <br />
+        <div style="background-color:lightpink">
+            <h4>Organization</h4>
+            <p>Name: {{organization}}</p>
+            <p>Address: {{organization_address}}</p>
+            <p>Contact: {{organization_contact}}</p>
+            <p>Rating: {{organization_rating}}</p>
+        </div>
+
+        <br />
+        <div style="background-color: yellowgreen">
+            <h4>Event</h4>
+            <p>Name: {{event_name}}</p>
+            <p>Description: {{event_description}}</p>
+            <p>Status: {{event_status}}</p>
+            <p>Max Participants: {{event_max_participants}}</p>
+        </div>
+        <p>Thank you for using our service!</p>
+    </div>
+</body>
+
+</html>
