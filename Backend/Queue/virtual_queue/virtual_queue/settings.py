@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-   	'rest_framework.authtoken',
+    'rest_framework.authtoken',
     'User',
     'organization',
     'subscription',
@@ -110,7 +110,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-
 PASSWORD_HASHERS = (
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
     'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
@@ -153,11 +152,12 @@ STATIC_URL = '/static/'
 # Activate mail service in django
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'qyu.contactus@gmail.com'
-EMAIL_HOST_PASSWORD = 'qyuwaitnomore'
+EMAIL_HOST_USER = ''  # Enter your gmail account here
+EMAIL_HOST_PASSWORD = ''  # Enter your account passowrd here
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+
 
 # Activate of django-heroku
 django_heroku.settings(locals())
