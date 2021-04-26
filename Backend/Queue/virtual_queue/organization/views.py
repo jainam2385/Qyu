@@ -26,6 +26,34 @@ def get_organization_model(organization_email):
     return OrganizationDetail.objects.get(email=organization_email)
 
 
+def validate_password(password):
+    if len(password) < 8:
+        return False
+
+    if len(password) > 15:
+        return False
+
+    nums = [str(i) for i in range(10)]
+
+    number, lower, upper, special = False, False, False, False
+
+    for p in password:
+        if p in nums:
+            number = True
+        if 0 <= ord(p) - 65 <= 25:
+            upper = True
+        if 0 <= ord(p) - 97 <= 25:
+            lower = True
+        if p in ['@', '#', '&']:
+            special = True
+
+    if not (number and lower and upper and special):
+        return False
+
+    return True
+
+
+
 class OrganizationDetailApi(APIView):
 
     permission_classes = [IsAdminUser]
@@ -50,13 +78,22 @@ class OrganizationDetailApi(APIView):
 
 
     def post(self, request):
-        organization_data = OrganizationDetailSerailizer(data = request.data)
+        organization_data = OrganizationDetailSerailizer(data=request.data)
         if organization_data.is_valid():
-            organization_data.validated_data["password"] = hash_password(organization_data.validated_data["password"])
-            organization_data.save()
+            if (validate_password(organization_data.validated_data["password"])):
 
-            return Response(
-                status=status.HTTP_201_CREATED,
+                organization_data.validated_data["password"] = hash_password(
+                    organization_data.validated_data["password"])
+                organization_data.save()
+
+                return Response(
+                    status=status.HTTP_201_CREATED,
+                )
+
+            return Response({
+                "success": False,
+                "error": "Password Invalid"
+            }, status=status.HTTP_400_BAD_REQUEST
             )
 
         return Response(

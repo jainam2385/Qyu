@@ -21,6 +21,34 @@ def get_user_model(user_id):
     return UserDetail.objects.get(id=user_id)
 
 
+def validate_password(password):
+    if len(password) < 8:
+        return False
+
+    if len(password) > 15:
+        return False
+
+    nums = [str(i) for i in range(10)]
+
+    number, lower, upper, special = False, False, False, False
+
+    for p in password:
+        if p in nums:
+            number = True
+        if 0 <= ord(p) - 65 <= 25:
+            upper = True
+        if 0 <= ord(p) - 97 <= 25:
+            lower = True
+        if p in ['@', '#', '&']:
+            special = True
+
+    if not (number and lower and upper and special):
+        return False
+    
+    return True
+
+
+
 class UserDetailApi(APIView):
 
     permission_classes = [IsAdminUser]
@@ -48,20 +76,28 @@ class UserDetailApi(APIView):
 
 
     def post(self, request):
-        user_data = UserDetailSerializer(data = request.data)
+        user_data = UserDetailSerializer(data=request.data)
         if user_data.is_valid():
-            user_data.validated_data["password"] = hash_password(user_data.validated_data["password"])
-            user_data.save()
+            if (validate_password(user_data.validated_data["password"])):
+    
+                user_data.validated_data["password"] = hash_password(
+                    user_data.validated_data["password"])
+                user_data.save()
 
-            return Response(
-                status=status.HTTP_201_CREATED,
+                return Response(
+                    status=status.HTTP_201_CREATED,
+                )
+                
+            return Response({
+                "success": False,
+                "error": "Password Invalid"
+                }, status = status.HTTP_400_BAD_REQUEST
             )
 
         return Response(
             user_data.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
-
 
     def put(self, request):
         user_id = request.GET["id"]
