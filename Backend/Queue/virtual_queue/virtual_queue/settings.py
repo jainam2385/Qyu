@@ -152,8 +152,8 @@ STATIC_URL = '/static/'
 # Activate mail service in django
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = ''  # Enter your gmail account here
-EMAIL_HOST_PASSWORD = ''  # Enter your account passowrd here
+EMAIL_HOST_USER = 'qyu.contactus@gmail.com'  # Enter your gmail account here
+EMAIL_HOST_PASSWORD = 'qyuwaitnomore'  # Enter your account passowrd here
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
