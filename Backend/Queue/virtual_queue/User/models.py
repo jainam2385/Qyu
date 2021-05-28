@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class UserDetail(models.Model):
     username = models.CharField(unique=True, blank=False, max_length=100)
     password = models.CharField(blank=False, max_length=100)

@@ -9,7 +9,8 @@ class OrganizationDetail(models.Model):
     contact = models.CharField(max_length=10, blank=True, default="")
     rating = models.FloatField(default=10.0)
     is_verified = models.BooleanField(default=False)
-    gstno = models.CharField(default="", max_length=15, blank=False, unique=True)
+    gstno = models.CharField(default="", max_length=15,
+                             blank=False, unique=True)
 
     def __str__(self) -> str:
         return f"{self.id}"

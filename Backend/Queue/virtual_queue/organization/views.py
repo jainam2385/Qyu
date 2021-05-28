@@ -1,4 +1,4 @@
-from .serializers  import OrganizationDetailSerailizer
+from .serializers import OrganizationDetailSerailizer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -7,7 +7,7 @@ from .models import OrganizationDetail
 from django.contrib.auth.hashers import (
     make_password,
     check_password
-    )
+)
 from event.models import Event
 from event.serializers import EventSerializer
 from vqueue.models import Queue
@@ -53,7 +53,6 @@ def validate_password(password):
     return True
 
 
-
 class OrganizationDetailApi(APIView):
 
     permission_classes = [IsAdminUser]
@@ -75,7 +74,6 @@ class OrganizationDetailApi(APIView):
             return Response(
                 status=status.HTTP_404_NOT_FOUND,
             )
-
 
     def post(self, request):
         organization_data = OrganizationDetailSerailizer(data=request.data)
@@ -100,7 +98,6 @@ class OrganizationDetailApi(APIView):
             organization_data.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
-
 
     def put(self, request):
         organization_email = request.GET["email"]
@@ -155,12 +152,12 @@ class AuthenticateOrganizationApi(APIView):
             if confirm_password(password_, organization_model.password):
                 return Response(
                     serializer.data,
-                    status = status.HTTP_200_OK
+                    status=status.HTTP_200_OK
                 )
 
-            return  Response({
+            return Response({
                 "authenticate": False
-            }, status = status.HTTP_401_UNAUTHORIZED)
+            }, status=status.HTTP_401_UNAUTHORIZED)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -177,9 +174,10 @@ class OrganizationEvents(APIView):
 
             organization_id_ = request.GET["organization_id"]
             if status_ == "A" or status_ == "R" or status_ == "D":
-                events = Event.objects.filter(organization_id = organization_id_, status = status_)
+                events = Event.objects.filter(
+                    organization_id=organization_id_, status=status_)
             else:
-                events = Event.objects.filter(organization_id = organization_id_)
+                events = Event.objects.filter(organization_id=organization_id_)
 
             serializer = EventSerializer(
                 events,
@@ -187,7 +185,7 @@ class OrganizationEvents(APIView):
             )
             return Response(
                 serializer.data,
-                status = status.HTTP_200_OK
+                status=status.HTTP_200_OK
             )
         except:
             return Response(
@@ -202,11 +200,11 @@ class AllOrganizations(APIView):
         organizations = OrganizationDetail.objects.all()
         organizations_serializer = OrganizationDetailSerailizer(
             organizations,
-            many = True
+            many=True
         )
         return Response(
-            organizations_serializer.data, 
-            status = status.HTTP_200_OK
+            organizations_serializer.data,
+            status=status.HTTP_200_OK
         )
 
 
@@ -219,15 +217,17 @@ class OrganizationStatistics(APIView):
         except:
             return Response({
                 "success": False
-                }, 
+            },
                 status=status.HTTP_400_BAD_REQUEST
             )
 
         try:
 
-            events = Event.objects.filter(organization_id = _organization_id)
-            queue = Queue.objects.filter(event_id__in = [current_event.id for current_event in events])
-            review = ReviewOrganization.objects.filter(organization_id = _organization_id)
+            events = Event.objects.filter(organization_id=_organization_id)
+            queue = Queue.objects.filter(
+                event_id__in=[current_event.id for current_event in events])
+            review = ReviewOrganization.objects.filter(
+                organization_id=_organization_id)
             organization = OrganizationDetail.objects.get(id=_organization_id)
 
             left = queue.filter(status="L").count()
@@ -254,5 +254,5 @@ class OrganizationStatistics(APIView):
         except:
             return Response({
                 "success": False
-                }, status=status.HTTP_400_BAD_REQUEST
+            }, status=status.HTTP_400_BAD_REQUEST
             )

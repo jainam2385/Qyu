@@ -10,19 +10,20 @@ from organization.models import OrganizationDetail
 from event.models import Event
 
 
-
 class ReviewDetailApi(APIView):
-    
+
     permission_classes = [IsAdminUser]
 
     def __change_organization_rating(self, _organization_id):
-        organization = OrganizationDetail.objects.get(id = _organization_id)
+        organization = OrganizationDetail.objects.get(id=_organization_id)
 
-        organization_review = ReviewOrganization.objects.filter(organization_id = _organization_id)
+        organization_review = ReviewOrganization.objects.filter(
+            organization_id=_organization_id)
         total_reviews = organization_review.count()
 
         if total_reviews >= 1:
-            sum_reviews = sum([curr_review.rating for curr_review in organization_review])
+            sum_reviews = sum(
+                [curr_review.rating for curr_review in organization_review])
 
             average = round(sum_reviews / total_reviews, 1)
             organization.rating = average
@@ -32,24 +33,24 @@ class ReviewDetailApi(APIView):
         try:
             _user_id = request.GET["user_id"]
 
-            model = ReviewOrganization.objects.filter(user_id = _user_id)
+            model = ReviewOrganization.objects.filter(user_id=_user_id)
             serializer = OrganizationReviewSerializer(
                 model,
-                many = True,
+                many=True,
             )
 
             return Response(
-                serializer.data, 
-                status = status.HTTP_200_OK
+                serializer.data,
+                status=status.HTTP_200_OK
             )
 
         except:
             return Response({
                 "success": False
-            }, status = status.HTTP_400_BAD_REQUEST)
+            }, status=status.HTTP_400_BAD_REQUEST)
 
     def post(self, request):
-        review_data = OrganizationReviewSerializer(data = request.data)
+        review_data = OrganizationReviewSerializer(data=request.data)
 
         if review_data.is_valid():
             if 0.0 <= review_data.validated_data["rating"] <= 10.0:
@@ -60,7 +61,7 @@ class ReviewDetailApi(APIView):
 
                 return Response({
                     "success": True
-                },status = status.HTTP_201_CREATED)
+                }, status=status.HTTP_201_CREATED)
 
             else:
                 return Response({
@@ -70,17 +71,17 @@ class ReviewDetailApi(APIView):
         else:
             return Response(
                 review_data.errors,
-                status = status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_400_BAD_REQUEST
             )
-    
+
     def delete(self, request):
         try:
             _user_id = request.GET["user_id"]
             _organization_id = request.GET["organization_id"]
 
             review_model = ReviewOrganization.objects.get(
-                user_id = _user_id,
-                organization_id = _organization_id
+                user_id=_user_id,
+                organization_id=_organization_id
             )
 
             review_model.delete()
@@ -90,7 +91,7 @@ class ReviewDetailApi(APIView):
 
             return Response({
                 "success": True
-            }, status = status.HTTP_204_NO_CONTENT)
+            }, status=status.HTTP_204_NO_CONTENT)
 
         except:
             return Response({
@@ -99,7 +100,7 @@ class ReviewDetailApi(APIView):
 
 
 class ListUserOrganizations(APIView):
-    
+
     permission_classes = [IsAdminUser]
 
     def get(self, request):
@@ -109,13 +110,13 @@ class ListUserOrganizations(APIView):
 
             if "status" in request.GET:
                 _status = request.GET["status"]
-            
+
             response = {}
             if _status == "reviewleft":
                 for i in Queue.objects.all():
                     try:
                         ReviewOrganization.objects.get(
-                            user_id=_user_id, 
+                            user_id=_user_id,
                             organization_id=i.event_id.organization_id.id
                         )
                     except:
@@ -127,9 +128,9 @@ class ListUserOrganizations(APIView):
                 for i in Queue.objects.all():
                     try:
                         ReviewOrganization.objects.get(
-                            user_id=_user_id, 
+                            user_id=_user_id,
                             organization_id=i.event_id.organization_id.id
-                        )   
+                        )
                         response[i.event_id.organization_id.id] = OrganizationDetailSerailizer(
                             i.event_id.organization_id
                         ).data
@@ -138,36 +139,37 @@ class ListUserOrganizations(APIView):
 
             return Response(
                 response.values(),
-                status = status.HTTP_200_OK
+                status=status.HTTP_200_OK
             )
         except:
             return Response({
                 "success": False
-            }, status = status.HTTP_400_BAD_REQUEST)
+            }, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ReviewList(APIView):
 
-    permission_classes=[IsAdminUser]
+    permission_classes = [IsAdminUser]
 
     def get(self, request):
         try:
             _organization_id = request.GET["organization_id"]
 
-            reviews = ReviewOrganization.objects.filter(organization_id = _organization_id)
-            
+            reviews = ReviewOrganization.objects.filter(
+                organization_id=_organization_id)
+
             serializer = OrganizationReviewSerializer(
                 reviews,
-                many = True
+                many=True
             )
 
             return Response(
-                serializer.data, 
-                status = status.HTTP_200_OK
+                serializer.data,
+                status=status.HTTP_200_OK
             )
 
         except:
             return Response({
                 "success": False
-                }, status = status.HTTP_400_BAD_REQUEST
+            }, status=status.HTTP_400_BAD_REQUEST
             )

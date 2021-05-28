@@ -2,8 +2,10 @@ from django.db import models
 from organization.models import OrganizationDetail
 from User.models import UserDetail
 
+
 class Subscription(models.Model):
-    organization_id = models.ForeignKey(OrganizationDetail, on_delete=models.CASCADE)
+    organization_id = models.ForeignKey(
+        OrganizationDetail, on_delete=models.CASCADE)
     user_id = models.ForeignKey(UserDetail, on_delete=models.CASCADE)
 
     class Meta:

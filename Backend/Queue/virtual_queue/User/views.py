@@ -9,12 +9,13 @@ from django.contrib.auth.hashers import (
     check_password
 )
 
+
 def hash_password(password):
     return make_password(password)
 
 
 def confirm_password(password, hashed_password):
-    return  check_password(password, hashed_password)
+    return check_password(password, hashed_password)
 
 
 def get_user_model(user_id):
@@ -44,9 +45,8 @@ def validate_password(password):
 
     if not (number and lower and upper and special):
         return False
-    
-    return True
 
+    return True
 
 
 class UserDetailApi(APIView):
@@ -74,12 +74,11 @@ class UserDetailApi(APIView):
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-
     def post(self, request):
         user_data = UserDetailSerializer(data=request.data)
         if user_data.is_valid():
             if (validate_password(user_data.validated_data["password"])):
-    
+
                 user_data.validated_data["password"] = hash_password(
                     user_data.validated_data["password"])
                 user_data.save()
@@ -87,11 +86,11 @@ class UserDetailApi(APIView):
                 return Response(
                     status=status.HTTP_201_CREATED,
                 )
-                
+
             return Response({
                 "success": False,
                 "error": "Password Invalid"
-                }, status = status.HTTP_400_BAD_REQUEST
+            }, status=status.HTTP_400_BAD_REQUEST
             )
 
         return Response(
@@ -118,7 +117,6 @@ class UserDetailApi(APIView):
                 serializer.errors,
                 status=status.HTTP_406_NOT_ACCEPTABLE
             )
-
 
     def delete(self, request):
 
@@ -153,7 +151,7 @@ class AuthenticateUserApi(APIView):
             if confirm_password(password_, user_model.password):
                 return Response(
                     serializer.data,
-                    status = status.HTTP_200_OK
+                    status=status.HTTP_200_OK
                 )
 
             return Response({

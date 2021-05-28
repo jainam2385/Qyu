@@ -1,4 +1,4 @@
-from .serializers  import EventSerializer
+from .serializers import EventSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -13,7 +13,6 @@ from virtual_queue.settings import EMAIL_HOST_USER
 import uuid
 
 
-
 def is_unique(key):
     try:
         Event.objects.get(security_key=key)
@@ -23,13 +22,13 @@ def is_unique(key):
 
 
 def generate_security_key():
-    is_generated=False
+    is_generated = False
     security_key = '0'*10
 
     while not is_generated:
         security_key = str(uuid.uuid4())
         security_key = security_key.upper()
-        security_key = security_key.replace("-","")
+        security_key = security_key.replace("-", "")
         security_key = security_key[:10]
         if is_unique(security_key):
             is_generated = True
@@ -40,6 +39,7 @@ def generate_security_key():
 def get_event_model(event_id):
     return Event.objects.get(id=event_id)
 
+
 class EventDetailApi(APIView):
 
     permission_classes = [IsAdminUser]
@@ -48,7 +48,7 @@ class EventDetailApi(APIView):
 
         try:
             event_id = request.GET["event_id"]
-            event_model = Event.objects.get(id = event_id)
+            event_model = Event.objects.get(id=event_id)
 
             serializer = EventSerializer(
                 event_model,
@@ -60,7 +60,7 @@ class EventDetailApi(APIView):
                 status=status.HTTP_202_ACCEPTED
             )
         except:
-            return  Response(
+            return Response(
                 status=status.HTTP_404_NOT_FOUND
             )
 
@@ -108,12 +108,12 @@ class EventDetailApi(APIView):
 
             return Response(
                 EventSerializer(event_model).data,
-                status = status.HTTP_200_OK
+                status=status.HTTP_200_OK
             )
 
         except:
             return Response(
-                status = status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_400_BAD_REQUEST
             )
 
 
@@ -131,14 +131,15 @@ class StartEvent(APIView):
                 event_model.start_date_time = timezone.now()
                 event_model.save()
 
-                users = Queue.objects.filter(event_id = _event_id)
+                users = Queue.objects.filter(event_id=_event_id)
                 email_ids = [u.user_id.email for u in users]
 
                 # TODO Starting mail template edit
                 subject = "Event started"
                 message = "Event started"
 
-                messages = [(subject, message, EMAIL_HOST_USER, [recipient]) for recipient in email_ids]
+                messages = [(subject, message, EMAIL_HOST_USER, [recipient])
+                            for recipient in email_ids]
 
                 try:
                     send_mass_mail(messages)
@@ -150,12 +151,13 @@ class StartEvent(APIView):
                 )
             else:
                 return Response(
-                    status = status.HTTP_406_NOT_ACCEPTABLE
+                    status=status.HTTP_406_NOT_ACCEPTABLE
                 )
         except:
             return Response(
-                status = status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_400_BAD_REQUEST
             )
+
 
 class EndEvent(APIView):
 
@@ -180,13 +182,14 @@ class EndEvent(APIView):
                 event_model.save()
 
                 # TODO MAIL USERS OF EVENT ENDING
-                users = Queue.objects.filter(event_id = _event_id)
+                users = Queue.objects.filter(event_id=_event_id)
                 email_ids = [u.user_id.email for u in users]
 
                 subject = "Event ending"
                 message = "Event ending"
 
-                messages = [(subject, message, EMAIL_HOST_USER, [recipient]) for recipient in email_ids]
+                messages = [(subject, message, EMAIL_HOST_USER, [recipient])
+                            for recipient in email_ids]
 
                 try:
                     send_mass_mail(messages)
@@ -198,11 +201,11 @@ class EndEvent(APIView):
                 )
             else:
                 return Response(
-                    status = status.HTTP_406_NOT_ACCEPTABLE
+                    status=status.HTTP_406_NOT_ACCEPTABLE
                 )
         except:
             return Response(
-                status = status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_400_BAD_REQUEST
             )
 
 
@@ -213,17 +216,18 @@ class PublicEvents(APIView):
     def get(self, request):
         try:
             _status = request.GET["status"]
-            ongoing_events = Event.objects.filter(status=_status, is_private = False)
+            ongoing_events = Event.objects.filter(
+                status=_status, is_private=False)
             serializer = EventSerializer(
                 ongoing_events,
                 many=True
             )
             return Response(
                 serializer.data,
-                status = status.HTTP_200_OK
+                status=status.HTTP_200_OK
             )
 
         except:
             return Response(
-                status = status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_400_BAD_REQUEST
             )
