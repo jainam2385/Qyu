@@ -14,13 +14,18 @@
 
 ## Problem definition
 
-    1. Having to physically queue in line or waiting for hour in waiting rooms and crowded lobbies has grown to be a major community problem
+    1. Having to physically queue in line or waiting for hour in waiting rooms and crowded
+    lobbies has grown to be a major community problem
 
-    2. The model of waiting in lines is very inefficient, customers have to be in line in order to be served even if the line may have more than a hundred customers ahead.
+    2. The model of waiting in lines is very inefficient, customers have to be in line in
+    order to be served even if the line may have more than a hundred customers ahead.
 
-    3. Despite this fact, service-based organizations that have the longest waiting time are making very little effort to improve on it.
+    3. Despite this fact, service-based organizations that have the longest waiting time are
+    making very little effort to improve on it.
 
-    4. Needed is a system which allows queue management to be provided as a service and customers can accurately estimate their wait times and keep them updated as the queue progresses without having to wait in the premise or crowded lobbies.
+    4. Needed is a system which allows queue management to be provided as a service and
+    customers can accurately estimate their wait times and keep them updated as the queue
+    progresses without having to wait in the premise or crowded lobbies.
 
 ## Scope
 
