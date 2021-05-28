@@ -1,10 +1,14 @@
 # Qyu? Wait No Longer! - Virtual Queue System
 
+</br>
+
 ## Submitted at the end of semester IV in partial fulfillment of requirements Of Bachelors in Technology in Computer Engineering by:
 
 -   ### Jainam Shah - 1911120
 -   ### Parthiv Shah - 1911121
 -   ### Asim Siddiqui - 2021014
+
+</br>
 
 ## Guide
 
@@ -27,6 +31,8 @@
    customers can accurately estimate their wait times and keep them updated as the queue
    progresses without having to wait in the premise or crowded lobbies.
 
+</br>
+
 ## Scope 💡
 
 1. The scope of the developed system Project is planning, designing, developing, and
@@ -46,6 +52,8 @@
 
 6. The application will allow the organization to broadcast some message to their customer or
    manually notify the customer.
+
+</br>
 
 ## Tech Stack 📚
 
