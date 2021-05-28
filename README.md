@@ -12,7 +12,7 @@
 
 </br>
 
-## Problem definition
+## Problem definition ✨
 
     1. Having to physically queue in line or waiting for hour in waiting rooms and crowded
     lobbies has grown to be a major community problem
@@ -27,7 +27,7 @@
     customers can accurately estimate their wait times and keep them updated as the queue
     progresses without having to wait in the premise or crowded lobbies.
 
-## Scope
+## Scope 💡
 
     1. The scope of the developed system Project is planning, designing, developing, and
     implementing a Restful API where all virtual queues would be managed and a mobile application
@@ -47,21 +47,12 @@
     6. The application will allow the organization to broadcast some message to their customer or
     manually notify the customer.
 
-## Language, Tools and Technology
+## Tech Stack 📚
 
-<p>
-<img height="35" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/python/python.png">
-
-<img height="35" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/django/django.png">
-
-<img height="35" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/sql/sql.png">
-
-<img height="35" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/html/html.png">
-
-<img height="35" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/css/css.png">
-
-<img height="35" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/java/java.png">
-
-<img height="35" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/android/android.png">
-
-</p>
+-   Python
+-   Java
+-   Android
+-   Html
+-   Sqlite3
+-   Django
+-   Django Rest Framework
